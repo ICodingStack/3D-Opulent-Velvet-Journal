@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Opulent Velvet Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    #dust { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    #spotlight { position: fixed; top: 0; left: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(245,223,160,0.15) 0%, transparent 70%); pointer-events: none; transform: translate(-50%, -50%); z-index: 2; mix-blend-mode: screen; }
+  </style>
+</head>
+<body>
+
+  <!-- Particle canvas -->
+  <canvas id="dust"></canvas>
+
+  <!-- Mouse spotlight -->
+  <div id="spotlight"></div>
+
+  <!-- HEADER, MAIN, etc. stay the same -->
+  <header>
+    <h1>3D Opulent Velvet Journal</h1>
+    <p>Experience timeless elegance in digital form</p>
+  </header>
+
+  <main>
+    <div class="counter">
+      <span id="pgCurrent">0</span>
+      <span class="sep">—</span>
+      <span id="pgTotal">9</span>
+    </div>
+
+    <div class="stage">
+      <button class="arrow" id="btnPrev" disabled aria-label="Previous">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="book" id="book">
+        <div class="spine"></div>
+        <div class="book-left"></div>
+        <div class="book-right" id="cover">...</div>
+        <div class="pages" id="pages"></div>
+      </div>
+
+      <button class="arrow" id="btnNext" aria-label="Next">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="dots" id="dots"></div>
+    <p class="hint" id="hint">Click the book or use arrows to turn pages</p>
+  </main>
+
+  <footer>Crafted with devotion &middot; Opulent Journal &middot; MMXXV</footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

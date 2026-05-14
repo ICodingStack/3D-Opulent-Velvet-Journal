@@ -1,0 +1,430 @@
+/* ============================================================
+   3D OPULENT VELVET JOURNAL  —  style.css  v3.0
+   ============================================================ */
+
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root {
+  --gold:        #C9A84C;
+  --gold-hi:     #E8C96A;
+  --gold-lo:     #7A5C1E;
+  --gold-foil:   #F5DFA0;
+  --paper:       #F5EFE6;
+  --paper-w:     #FAF5EC;
+  --paper-d:     #E0D5C5;
+
+  /* Book geometry — keep page slightly smaller so it fits inside book half */
+  --bk-w:   660px;   /* total book width  */
+  --bk-h:   460px;   /* total book height */
+  --sp-w:    22px;   /* spine width       */
+  /* Each half = (--bk-w - --sp-w) / 2  = 319px */
+  --half:   319px;
+  --pg-h:   440px;   /* page height       */
+
+  --silk: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+/* ── RESET ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; }
+
+/* ── BODY / BG ───────────────────────────────────────────────── */
+body {
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--gold);
+  overflow-x: hidden;
+  /* animated dark gradient */
+  background: linear-gradient(135deg, #06040a, #0c0818, #110920, #0f0810);
+  background-size: 300% 300%;
+  animation: bgShift 20s ease infinite;
+}
+
+@keyframes bgShift {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* velvet noise */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 180px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── PARTICLE CANVAS ─────────────────────────────────────────── */
+#dust {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── MOUSE SPOTLIGHT ─────────────────────────────────────────── */
+#spotlight {
+  position: fixed;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.065) 0%, transparent 65%);
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+/* ── HEADER ──────────────────────────────────────────────────── */
+header {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 2.4rem 1rem .4rem;
+  animation: fadeDown 1s ease both;
+}
+
+header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: .18em;
+  color: var(--gold-hi);
+  text-shadow: 0 0 30px rgba(201,168,76,.35), 0 2px 8px rgba(0,0,0,.9);
+}
+
+header p {
+  font-style: italic;
+  font-size: clamp(.75rem, 1.6vw, .95rem);
+  color: rgba(201,168,76,.5);
+  letter-spacing: .12em;
+  margin-top: .3rem;
+}
+
+@keyframes fadeDown {
+  from { opacity:0; transform: translateY(-18px); }
+  to   { opacity:1; transform: none; }
+}
+
+/* ── MAIN / STAGE ────────────────────────────────────────────── */
+main {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.2rem 1rem .5rem;
+  min-height: calc(100vh - 110px);
+  animation: fadeIn .8s ease both .2s;
+}
+
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ── PAGE COUNTER ────────────────────────────────────────────── */
+.counter {
+  font-family: 'Cinzel', serif;
+  font-size: .68rem;
+  letter-spacing: .28em;
+  color: rgba(201,168,76,.45);
+  margin-bottom: 1rem;
+  display: flex; gap: .7rem; align-items: center;
+}
+
+#pgCurrent { color: var(--gold-hi); font-size: .82rem; }
+.sep { opacity: .35; }
+
+/* ── STAGE ROW ───────────────────────────────────────────────── */
+.stage {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+/* ── ARROWS ──────────────────────────────────────────────────── */
+.arrow {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.22);
+  background: rgba(201,168,76,.04);
+  color: var(--gold);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .3s ease;
+}
+.arrow svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.arrow:hover { background: rgba(201,168,76,.14); border-color: var(--gold); box-shadow: 0 0 18px rgba(201,168,76,.2); transform: scale(1.08); }
+.arrow:active { transform: scale(.94); }
+.arrow:disabled { opacity: .18; cursor: default; transform: none; pointer-events: none; }
+
+/* ── BOOK SHELL ──────────────────────────────────────────────── */
+.book {
+  position: relative;
+  width: var(--bk-w);
+  height: var(--bk-h);
+  /* perspective lives HERE so child rotations work */
+  perspective: 2200px;
+  perspective-origin: 50% 48%;
+  cursor: pointer;
+  user-select: none;
+  animation: float 7s ease-in-out infinite;
+  /* drop shadow via filter (works with perspective) */
+  filter: drop-shadow(0 28px 55px rgba(0,0,0,.75))
+          drop-shadow(0 4px 18px rgba(201,168,76,.07));
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* ambient glow under book */
+.book::after {
+  content: '';
+  position: absolute;
+  bottom: -14px; left: 10%; right: 10%; height: 14px;
+  background: radial-gradient(ellipse, rgba(201,168,76,.1) 0%, transparent 70%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ── LEFT HALF (back cover / turned-page area) ───────────────── */
+.book-left {
+  position: absolute;
+  top: 0; left: 0;
+  width: var(--half);
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(135deg, #110d08 0%, #0a0806 100%);
+  z-index: 1;
+  /* inner border */
+  box-shadow: inset 0 0 0 1px rgba(201,168,76,.07);
+}
+
+/* ── SPINE ───────────────────────────────────────────────────── */
+.spine {
+  position: absolute;
+  top: 0;
+  left: var(--half);      /* sits right between the two halves */
+  width: var(--sp-w);
+  height: 100%;
+  background: linear-gradient(to right, #0a0707 0%, #1c1008 40%, #221408 60%, #0a0707 100%);
+  z-index: 40;            /* above everything */
+  box-shadow:
+    inset -1px 0 3px rgba(201,168,76,.12),
+    inset  1px 0 3px rgba(0,0,0,.5);
+}
+
+/* ── RIGHT HALF — FRONT COVER ────────────────────────────────── */
+.book-right {
+  position: absolute;
+  top: 0;
+  left: calc(var(--half) + var(--sp-w));
+  width: var(--half);
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  z-index: 35;            /* above pages, below spine */
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  /* cover starts closed; JS adds .open to flip it away */
+  transition: transform .85s var(--silk);
+}
+
+.book-right.open {
+  transform: rotateY(-180deg);
+}
+
+/* Cover front face */
+.cover-face {
+  position: absolute; inset: 0;
+  border-radius: 0 4px 4px 0;
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,.004) 0px, rgba(255,255,255,.004) 1px,
+      transparent 1px, transparent 5px),
+    linear-gradient(160deg, #100c0c 0%, #080608 55%, #0a0707 100%);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Cover inner layout */
+.cover-inner {
+  position: absolute; inset: 14px;
+  border: 1px solid rgba(201,168,76,.16);
+  border-radius: 2px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .55rem;
+}
+
+.cover-inner::before {
+  content: '';
+  position: absolute; inset: 5px;
+  border: 1px solid rgba(201,168,76,.06);
+  border-radius: 1px;
+}
+
+.seal {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.3);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(201,168,76,.45);
+  font-size: .9rem;
+  box-shadow: 0 0 10px rgba(201,168,76,.12);
+}
+
+.cover-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-align: center;
+  line-height: 1.65;
+  color: var(--gold-hi);
+  text-shadow: 0 0 18px rgba(201,168,76,.4);
+}
+
+.cover-sub {
+  font-size: .52rem;
+  letter-spacing: .26em;
+  color: rgba(201,168,76,.38);
+  font-family: 'Cinzel', serif;
+}
+
+.orn { width: 65%; opacity: .75; }
+
+/* ── PAGES CONTAINER ─────────────────────────────────────────── */
+.pages {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  /* preserve-3d so child rotateY works */
+  transform-style: preserve-3d;
+  pointer-events: none;   /* arrows/book click go through */
+  z-index: 5;
+}
+
+/* ── INDIVIDUAL PAGE ─────────────────────────────────────────── */
+.page {
+  position: absolute;
+  /* Pages sit on the RIGHT half — anchor at spine edge */
+  top: calc((var(--bk-h) - var(--pg-h)) / 2);
+  left: calc(var(--half) + var(--sp-w));
+  width: var(--half);
+  height: var(--pg-h);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  pointer-events: none;    /* book div receives clicks */
+  border-radius: 0 3px 3px 0;
+}
+
+/* turned state — set via JS inline style, NOT a CSS class,
+   so the transition is also set via JS for precise control   */
+
+/* ── PAGE FACES ──────────────────────────────────────────────── */
+.page-front, .page-back {          
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front face = right-hand page (faces viewer when unturned) */
+.page-front {
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(to bottom, var(--paper-w), var(--paper));
+  box-shadow: 3px 0 8px rgba(0,0,0,.35), inset -1px 0 0 rgba(201,168,76,.18);
+}
+
+/* Back face = left-hand page (faces viewer after turn) */
+.page-back {
+  border-radius: 3px 0 0 3px;
+  transform: rotateY(180deg);
+  background: linear-gradient(to bottom, var(--paper), var(--paper-d));
+  box-shadow: -3px 0 8px rgba(0,0,0,.3), inset 1px 0 0 rgba(201,168,76,.15);
+}
+
+/* Gold foil edges (top & bottom) */
+.pg-front::before, .pg-back::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,.55),
+              rgba(245,223,160,.75), rgba(201,168,76,.55), transparent);
+}
+.pg-front::after, .pg-back::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,.38),
+              rgba(245,223,160,.55), rgba(201,168,76,.38), transparent);
+}
+
+/* Canvas fills its face */
+.pg-front canvas, .pg-back canvas {
+  display: block;
+  width: 100%; height: 100%;
+}
+
+/* ── PROGRESS DOTS ───────────────────────────────────────────── */
+.dots {
+  display: flex; gap: 7px; margin-top: 1.3rem;
+  align-items: center; justify-content: center;
+}
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(201,168,76,.18);
+  border: 1px solid rgba(201,168,76,.28);
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.dot.on {
+  background: var(--gold);
+  box-shadow: 0 0 7px rgba(201,168,76,.5);
+  transform: scale(1.35);
+}
+
+/* ── HINT TEXT ───────────────────────────────────────────────── */
+.hint {
+  font-style: italic; font-size: .68rem;
+  letter-spacing: .14em;
+  color: rgba(201,168,76,.3);
+  margin-top: .9rem;
+  animation: hintFade 3.5s ease 2.5s forwards;
+}
+@keyframes hintFade { to { opacity: 0; } }
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+footer {
+  position: relative; z-index: 10;
+  text-align: center; padding: 1rem;
+  font-size: .7rem; letter-spacing: .14em;
+  color: rgba(201,168,76,.22);
+}
+footer span { color: var(--gold); }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #060408; }
+::-webkit-scrollbar-thumb { background: var(--gold-lo); border-radius: 2px; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  :root {
+    --bk-w:  380px;
+    --bk-h:  280px;
+    --sp-w:  14px;
+    --half:  183px;
+    --pg-h:  264px;
+  }
+  header h1 { font-size: 1.1rem; }
+  .arrow { width: 36px; height: 36px; }
+  .stage { gap: .8rem; }
+  .cover-title { font-size: .65rem; }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --bk-w:  300px;
+    --bk-h:  230px;
+    --sp-w:  12px;
+    --half:  144px;
+    --pg-h:  216px;
+  }
+  .stage { gap: .5rem; }
+}
