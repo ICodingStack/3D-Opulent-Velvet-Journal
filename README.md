@@ -47,17 +47,6 @@ A hyper-realistic, ultra-luxurious digital journal that feels like opening a **$
 
 ---
 
-## ✦ Live Demo
-
-> **[▶ View Live Demo](#)** ← *(deploy to GitHub Pages / Netlify / Vercel)*
-
-```
-Settings → Pages → Deploy from /root → Save
-```
-
-Your journal will be live at `https://your-username.github.io/3d-opulent-velvet-journal/`
-
----
 
 ## ✦ Preview
 
@@ -112,10 +101,10 @@ No build step. No dependencies. Clone and open.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/3d-opulent-velvet-journal.git
+git clone https://github.com/ICodingStack/3D-Opulent-Velvet-Journal.git
 
 # 2. Navigate to the project
-cd 3d-opulent-velvet-journal
+cd 3D-Opulent-Velvet-Journal
 
 # 3. Open in browser
 open index.html
@@ -129,7 +118,7 @@ npx serve .          # for a local dev server (optional)
 git init
 git add .
 git commit -m "✦ Initial commit — Opulent Journal v1.0.0"
-git remote add origin https://github.com/YOUR_USERNAME/3d-opulent-velvet-journal.git
+git remote add origin https://github.com/ICodingStack/3D-Opulent-Velvet-Journal.git
 git push -u origin main
 # Then enable Pages in repository Settings
 ```
@@ -178,7 +167,8 @@ MIT License — Copyright © 2025 Opulent Studio
 See [LICENSE](LICENSE) for full text.
 
 ---
-
 <p align="center">
-  <i>Crafted with devotion · Opulent Journal · MMXXV</i>
+  <strong>Made with love by <a href="https://blackbirdo.com" target="_blank">BlackBirdo.com</a></strong>
 </p>
+
+
