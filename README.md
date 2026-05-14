@@ -4,6 +4,14 @@
 
 <br/>
 
+## ✦ Preview & Screenshot
+
+<p align="center">
+  <a href="/assets/preview.png" target="_blank">
+    <img src="/assets/preview.png" alt="3D Opulent Velvet Journal Preview" width="85%" style="border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+  </a>
+</p>
+
 <p align="center">
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-c9a84c?style=flat-square&labelColor=0d0a12"/>
   <img alt="HTML5" src="https://img.shields.io/badge/HTML5-Pure_Vanilla-c9a84c?style=flat-square&labelColor=0d0a12"/>
